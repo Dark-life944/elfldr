@@ -33,20 +33,23 @@ bootstrap_elf.c: bootstrap.elf
 bootstrap.o: socksrv_elf.c
 main.o: bootstrap_elf.c
 
+
 bootstrap.elf: bootstrap.o elfldr.o pt.o notify.o
-	$(CC) -lkernel_sys -o $@ $^
+	$(CC) -static -lkernel_sys -o $@ $^
 
 bootstrap_elf.c: bootstrap.elf
 	xxd -i $^ > $@
 
+
 socksrv.elf: socksrv.o elfldr.o pt.o notify.o
-	$(CC) -lkernel_sys -o $@ $^
+	$(CC) -static -lkernel_sys -o $@ $^
 
 socksrv_elf.c: socksrv.elf
 	xxd -i $^ > $@
 
+
 elfldr.elf: main.o elfldr.o pt.o notify.o
-	$(CC) -o $@ $^
+	$(CC) -static -o $@ $^
 
 clean:
 	rm -f bootstrap_elf.c socksrv_elf.c *.o *.elf
